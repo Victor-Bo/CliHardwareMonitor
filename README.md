@@ -1,10 +1,20 @@
 # CliHardwareMonitor
 A project that can get informations from LibreHardwareMonitor and displays these
-informations on the terminal in a pretty way. You can hide or show some
-informations for example I use it mainly to display only temperatures :
-
+informations on the terminal in a pretty way. The web server of LibreHardwareMonitor. Before using it you must create a 
+`config.json` in the same folder of the script like this:
 ```json
 {
+  // Host name of the web server
+  "hostName": "ip or domain",
+
+  // Port of the web server
+  "port": 8085,
+
+  // Enable the emojis with Nerd Fonts
+  "emoji": false,
+
+  // The types to hide or display
+  "types": {
     "Clocks": false,
     "Temperatures": true,
     "Load": false,
@@ -12,6 +22,21 @@ informations for example I use it mainly to display only temperatures :
     "Powers": false,
     "Data": false,
     "Throughput": false
+  },
+
+  // Emojis
+  "emojis": {
+    "Clocks": "",
+    "Temperatures": "",
+    "Load": "",
+    "Levels": "",
+    "Powers": "",
+    "Data": "",
+    "Throughput": "ﬔ"
+  },
+
+  // Delay of refresh in ms
+  "delay": 1000
 }
 ```
 Here is the output :

@@ -1,17 +1,16 @@
+// Modules
 const http = require("http");
+const fs = require("fs");
+const table = require("text-table");
 
-const types = {
-    "Clocks": false,
-    "Temperatures": true,
-    "Load": false,
-    "Levels": false,
-    "Powers": false,
-    "Data": false,
-    "Throughput": false
-}
+// Read the config file
+const CONFIG = JSON.parse(fs.readFileSync("config.json"));
 
+let tablelist = [];
+
+// Make the request to the local webserver every CONFIG["delay"] seconds
 setInterval(() => {
-    http.get("http://192.168.1.13:8086/data.json", (res) => {
+    http.get(`http://${CONFIG["hostName"]}:${CONFIG["port"]}/data.json`, (res) => {
         let rawData = "";
 
         res.on("data", (chunk) => {
@@ -19,24 +18,32 @@ setInterval(() => {
         });
 
         res.on("end", () => {
-            console.clear();
+            process.stdout.write('\033c');
+            tablelist = [];
             displayInfos(JSON.parse(rawData), 0);
+            console.log(table(tablelist));
         });
     });
-}, 1000);
+}, CONFIG["delay"]);
 
+// Recursive function which read the data of the data.json
 const displayInfos = function (data, step) {
     data.Children.forEach((e) => {
-        if (e.Text in types) {
-            if (types[e.Text]) {
-                console.log("  ".repeat(step) + e.Text)
+        if (e.Text in CONFIG["types"]) {
+            if (CONFIG["types"][e.Text]) {
+                tablelist.push(["  ".repeat(step) + e.Text]);
                 displayInfos(e, step+1);
             }
         } else {
             if (!e.Value) {
-                process.stdout.write("\n");
+                tablelist.push(["\n" + "  ".repeat(step) + e.Text])
+            } else {
+                if (CONFIG["emoji"]) {
+                    tablelist.push(["  ".repeat(step) + CONFIG["emojis"][e.Type] + " " + e.Text + ": ", e.Value])
+                } else {
+                    tablelist.push(["  ".repeat(step) + e.Text + ": ", e.Value])
+                }
             }
-            console.log("  ".repeat(step) + e.Text + ": " + e.Value)
             displayInfos(e, step+1);
         }
     });
