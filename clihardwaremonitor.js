@@ -5,7 +5,6 @@ const table = require("text-table");
 const minimist = require("minimist");
 
 // Read the config file
-const CONFIG = JSON.parse(fs.readFileSync("config.json"));
 const args = minimist(process.argv.slice(2));
 
 // Data
