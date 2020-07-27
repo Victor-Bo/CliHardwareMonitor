@@ -1,6 +1,7 @@
 # CliHardwareMonitor
 A project that can get informations from LibreHardwareMonitor and displays these
 informations on the terminal in a pretty way. The web server of LibreHardwareMonitor.
+
 # Usage
 There are command-line flags:
 - `--host <host>` the host LibreHardwareMonitor is listening on (often the local ip)
