@@ -1,0 +1,19 @@
+{
+    "host": "0.0.0.0",
+    "port": "8085",
+    "images_enabled": false,
+    "test_data": false,
+    "images": {
+        "images_icon/computer.png": "",
+        "images_icon/cpu.png": "",
+        "images_icon/clock.png": "",
+        "images_icon/temperature.png": "",
+        "images_icon/load.png": "",
+        "images_icon/power.png": "",
+        "images_icon/nvidia.png": "",
+        "images_icon/throughput.png": "ﬔ",
+        "images_icon/hdd.png": "",
+        "images_icon/level.png": ""
+    },
+    "hide": []
+}
