@@ -20,6 +20,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - run: npm install
     - name: ESLint Action eslintrc
       uses: mrdivyansh/eslint-action@1.0.6
       with:
@@ -29,5 +30,4 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install
     - run: npm test
