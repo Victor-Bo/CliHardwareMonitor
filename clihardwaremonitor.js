@@ -1,8 +1,8 @@
 // Modules
 const http = require("http");
-const fs = require("fs");
 const table = require("text-table");
 const minimist = require("minimist");
+const ip = require("ip");
 
 // Read the config file
 const args = minimist(process.argv.slice(2));
@@ -20,56 +20,33 @@ const images = {
     "images_icon/hdd.png": "",
     "images_icon/level.png": ""
 }
-let types = {
-    "clocks": true,
-    "temperatures": true,
-    "load": true,
-    "levels": true,
-    "powers": true,
-    "data": true,
-    "throughput": true
-};
-
-Object.keys(types).forEach((e) => {
-    if (e in args && !args[e]) {
-        types[e] = false;
-    }
-    if (e in args && args[e]) {
-        types[e] = false;
-    } else if (e in args && args[e]) {
-        types[e] = true;
-    }
-});
 
 let tablelist = [];
 
 // Make the request to the local webserver every CONFIG["delay"] seconds
-setInterval(() => {
-    http.get(`http://${args["host"]}:${args["port"]}/data.json`, (res) => {
-        let rawData = "";
-
-        res.on("data", (chunk) => {
-            rawData += chunk;
-        });
-
-        res.on("end", () => {
-            process.stdout.write('\033c');
-            tablelist = [];
-            displayInfos(JSON.parse(rawData), 0);
-            console.log(table(tablelist));
-        });
-    });
-}, args["delay"] || 1000);
+http.get(`http://${args["host"] || ip.address()}:${args["port"] || 8085}/data.json`, (res) => {
+	let rawData = "";
+	res.on("data", (chunk) => {
+		rawData += chunk;
+	});
+	res.on("end", () => {
+		process.stdout.write('\033c');
+		tablelist = [];
+		displayInfos(JSON.parse(rawData), 0);
+		console.log(table(tablelist));
+	});
+});
 
 // Recursive function which read the data of the data.json
 const displayInfos = function (data, step) {
     data.Children.forEach((e) => {
-        if (types[e.Text.toLowerCase()] || !(e.Text.toLowerCase() in types)) {
-            tablelist.push([((!e.Value && !(e.Text.toLowerCase() in types)) ? "\n" : "") // \n if no value and not in types
+        if (true) {
+            tablelist.push([(step == 1 ? "\n" : "")                                       // \n if step == 1
             + "  ".repeat(step)                                                           // Indentation
             + ((args["images"] && e.ImageURL in images) ? images[e.ImageURL]+" " : "")    // Images
             + e.Text                                                                      // Text
-            + (e.Value ? ": " : ""), e.Value])                                            // Value
+            + (e.Value ? ": " : "")
+            , e.Value])                                                                    // Value
             displayInfos(e, step+1);
         }
     });
