@@ -4,7 +4,8 @@
   "description": "CliHardwareMonitor",
   "main": "clihardwaremonitor.js",
   "dependencies": {
-    "flat": "^5.0.0",
+    "flat": "^5.0.2",
+    "ip": "^1.1.5",
     "minimist": "^1.2.5",
     "table": "^5.4.6",
     "text-table": "^0.2.0"
