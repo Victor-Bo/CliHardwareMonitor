@@ -1,27 +1,18 @@
+// Test mode ?
+const TESTMODE = args["test-data"]
+
 // Modules
 const http = require("http");
 const table = require("text-table");
 const minimist = require("minimist");
 const ip = require("ip");
 const fs = require("fs");
-const CONFIG = JSON.parse(fs.readFileSync("./config.json"));
+if (!TESTMODE) {
+    const CONFIG = JSON.parse(fs.readFileSync("./config.json"));
+}
 
 // Read the config file
 const args = minimist(process.argv.slice(2));
-
-// Data
-const images = {
-    "images_icon/computer.png": "",
-    "images_icon/cpu.png": "",
-    "images_icon/clock.png": "",
-    "images_icon/temperature.png": "",
-    "images_icon/load.png": "",
-    "images_icon/power.png": "",
-    "images_icon/nvidia.png": "",
-    "images_icon/throughput.png": "ﬔ",
-    "images_icon/hdd.png": "",
-    "images_icon/level.png": ""
-}
 
 let tablelist = [];
 
@@ -38,7 +29,7 @@ const displayInfos = function (data, step) {
     });
 }
 
-if (CONFIG.test_data || args["test-data"]) {
+if (TESTMODE) {
     tablelist = [];
     displayInfos(JSON.parse(fs.readFileSync("./test_data.json")), 0);
     console.log(table(tablelist));
