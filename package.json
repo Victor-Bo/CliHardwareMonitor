@@ -4,6 +4,7 @@
   "description": "CliHardwareMonitor",
   "main": "clihardwaremonitor.js",
   "dependencies": {
+    "eslint": "^7.6.0",
     "flat": "^5.0.2",
     "ip": "^1.1.5",
     "minimist": "^1.2.5",
